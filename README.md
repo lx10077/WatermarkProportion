@@ -155,9 +155,8 @@ python Step2_modified_estimation.py \
   --method Gumbel --model facebook/opt-1.3b \
   --m 500 --T 500 --temp 1
 ```
-
 Again, you may skip Step 1 thanks to the bundled datasets.
 
 | Substitution | Insertion | Deletion |
 |--------------|-----------|----------|
-| <img src="LLM_code/figs/c4-sub-1p3B-Gumbel-N0500-temp1-IterFalse.png" width="220"> | <img src="LLM_code/figs/c4-ins-1p3B-Gumbel-N0500-temp1-IterFalse.png" width="220"> | <img src="LLM_code/figs/c4-del-1p3B-Gumbel-N0500-temp1-IterFalse.png" width="220"> |
+| <img src="LLM_code/figs/c4-sub-1p3B-Gumbel-N0500-temp1-IterFalse.png" width="250"> | <img src="LLM_code/figs/c4-ins-1p3B-Gumbel-N0500-temp1-IterFalse.png" width="250"> | <img src="LLM_code/figs/c4-del-1p3B-Gumbel-N0500-temp1-IterFalse.png" width="250"> |
