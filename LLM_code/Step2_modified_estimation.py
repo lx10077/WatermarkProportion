@@ -209,7 +209,7 @@ def plot4(task, watermark, model_name, temp):
     plt.ylabel("Mean absolute error")
     plt.xlabel("True proportion")
     plt.tight_layout()
-    plt.savefig(f"figs/c4-{task}-{task}-{model_name}-{watermark}-N0{N0}-temp{temp}-Iter{use_iterative}.pdf", dpi=300)
+    plt.savefig(f"figs/c4-{task}-{model_name}-{watermark}-N0{N0}-temp{temp}-Iter{use_iterative}.pdf", dpi=300)
 
     # Print summary in LaTeX format
     effective_number = 3

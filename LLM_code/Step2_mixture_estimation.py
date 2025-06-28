@@ -15,8 +15,23 @@ plt.rcParams.update({
     'text.latex.preamble': r'\usepackage{amsfonts}',
     'lines.linewidth': 2
 })
-from scipy.optimize import minimize
 from localization import OpenaiAligator
+import argparse
+
+# ======================= Argument Parsing ============================
+parser = argparse.ArgumentParser(description="Experiment Settings")
+
+parser.add_argument('--method', default="Gumbel", type=str)  # Watermark method to use
+parser.add_argument('--model', default="facebook/opt-1.3b", type=str)  # HuggingFace model
+parser.add_argument('--seed', default=15485863, type=int)  # Random seed for reproducibility
+parser.add_argument('--c', default=4, type=int)  # Window size for watermark seeding
+parser.add_argument('--m', default=500, type=int)  # Number of new tokens to generate
+parser.add_argument('--T', default=500, type=int)  # Number of total prompts
+parser.add_argument('--temp', default=1, type=float)  # Sampling temperature
+parser.add_argument('--seed_way', default="noncomm_prf", type=str)  # PRF seeding scheme
+
+args = parser.parse_args()
+print(args)
 
 # Histogram bin count used for density estimation
 N0 = 500
@@ -69,7 +84,9 @@ def select_the_best(lst1, lst2, lst3):
     selected_array = stacked[selected_index]
     return selected_array
 
-def plot4(watermark, size, temp):
+def plot4(watermark, model_name, temp):
+    size = "1p3B" if model_name == "facebook/opt-1.3b" else model_name.split("/")[-1]
+
     # Compute file naming and load estimation results if exist
     estimation_result_dir = f"fig_data/c4-mixture-{watermark}-{size}-N0{N0}-temp{temp}-Iter{use_iterative}.pkl"
     results_dict = dict()
@@ -80,7 +97,7 @@ def plot4(watermark, size, temp):
     mixed_Y, whether_watermark, top_prob = dict(), dict(), dict()
     true_eps = []
     for eps in all_eps:
-        file_dir = f"text_data/{size}-{watermark}-c4-m500-T500-noncomm_prf-15485863-temp{temp}-eps{eps}.pkl"
+        file_dir = f"text_data/{size}-{watermark}-c{args.c}-m{args.m}-T{args.T}-{args.seed_way}-{args.seed}-temp{temp}-eps{eps}.pkl"
         with open(file_dir, 'rb') as pickle_file:
             dataset = pickle.load(pickle_file)
         Y = dataset["watermark"]["Ys"].numpy()
@@ -205,4 +222,4 @@ def plot4(watermark, size, temp):
     print(output_str)
 
 if __name__ == "__main__":
-    plot4("Gumbel", "1p3B", 1)
+    plot4(args.method, args.model, args.temp)

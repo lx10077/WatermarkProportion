@@ -103,7 +103,7 @@ WG = WatermarkGenerate(
 )
 
 # =================== Generate and Save Data ============================
-for eps in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]:
+def generate_mixture_data(eps):
     print(eps)
     results = defaultdict(dict)
     results['args'] = copy.deepcopy(args)
@@ -143,12 +143,15 @@ for eps in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]:
     # Determine output name based on model
     if args.model == "facebook/opt-1.3b":
         model_name = "1p3B"
-    elif args.model == "princeton-nlp/Sheared-LLaMA-2.7B":
-        model_name = "2p7B"
     else:
-        model_name = "7B"
+        model_name = args.model.split("/")[-1]
 
     # Save results to file
     exp_name = f"text_data/{model_name}-{args.method}-c{args.c}-m{args.m}-T{args.T}-{args.seed_way}-{args.seed}-temp{args.temp}-eps{eps}.pkl"
     os.makedirs(os.path.dirname(exp_name), exist_ok=True)
     pickle.dump(results, open(exp_name, "wb"))
+
+
+if __name__ == "__main__":
+    for eps in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]:
+        generate_mixture_data(eps)
