@@ -60,7 +60,6 @@ from estimator import (
 
 # Main function to evaluate different estimators
 def plot4(task, watermark, model_name, temp):
-    save_dir = f"corrupted_{task}"
     mixed_Y = dict()
     whether_watermark = dict()
 
@@ -71,7 +70,7 @@ def plot4(task, watermark, model_name, temp):
 
     # Load corrupted dataset for different modification budgets
     for budget in modify_budgets:
-        exp_name = f"{save_dir}/{model_name}-{watermark}-c4-m500-T500-noncomm_prf-15485863-temp{temp}-{task}{budget}.pkl"
+        exp_name = f"text_data/{model_name}-{watermark}-c4-m500-T500-noncomm_prf-15485863-temp{temp}-{task}{budget}.pkl"
         if not os.path.exists(exp_name):
             raise FileNotFoundError(f"No such file: {exp_name}")
         with open(exp_name, "rb") as f:
@@ -87,11 +86,7 @@ def plot4(task, watermark, model_name, temp):
         mixed_Y[budget] = corrupted_Y
 
         # Determine where the watermark is still present
-        if task != "del":
-            whether_watermark[budget] = ~modify_mask.squeeze()
-        else:
-            whether_watermark[budget] = modify_mask.squeeze()
-
+        whether_watermark[budget] = ~modify_mask.squeeze()
         true_ep = np.mean(whether_watermark[budget])
         true_eps.append(true_ep)
 
@@ -103,7 +98,7 @@ def plot4(task, watermark, model_name, temp):
                              0.498844, 0.444976, 0.39272, 0.34916, 0.308352, 0.271004])
 
     # Load uncorrupted baseline sample for comparison
-    raw_exp_name = f"corrupted/{model_name}-{watermark}-c4-m500-T500-noncomm_prf-15485863-temp{temp}-raw.pkl"
+    raw_exp_name = f"text_data/{model_name}-{watermark}-c4-m500-T500-noncomm_prf-15485863-temp{temp}-raw.pkl"
     if not os.path.exists(raw_exp_name):
         raise FileNotFoundError(f"No such file: {raw_exp_name}")
     with open(raw_exp_name, "rb") as f:
@@ -114,7 +109,7 @@ def plot4(task, watermark, model_name, temp):
         alte_Y = (1 + alte_Y) ** 2
 
     # Path to store result for current config
-    estimation_result_dir = f"fig_{save_dir}/whole-{model_name}-{watermark}-{model_name}-N0{N0}-temp{temp}-Iter{use_iterative}.pkl"
+    estimation_result_dir = f"fig_data/c4-{task}-{model_name}-{watermark}-{model_name}-N0{N0}-temp{temp}-Iter{use_iterative}.pkl"
     os.makedirs(os.path.dirname(estimation_result_dir), exist_ok=True)
 
     results_dict = dict()
@@ -214,7 +209,7 @@ def plot4(task, watermark, model_name, temp):
     plt.ylabel("Mean absolute error")
     plt.xlabel("True proportion")
     plt.tight_layout()
-    plt.savefig(f"fig_{save_dir}/final-whole-{task}-{model_name}-{watermark}-N0{N0}-temp{temp}-Iter{use_iterative}.pdf", dpi=300)
+    plt.savefig(f"figs/c4-{task}-{task}-{model_name}-{watermark}-N0{N0}-temp{temp}-Iter{use_iterative}.pdf", dpi=300)
 
     # Print summary in LaTeX format
     effective_number = 3
@@ -227,16 +222,11 @@ def plot4(task, watermark, model_name, temp):
     a4 = int(round(np.mean(baseline_estimate_lst), effective_number) * 10**effective_number)
     b4 = int(round(np.std(baseline_estimate_lst), effective_number) * 10**effective_number)
 
-    output_str = f"{watermark},{model_name},{temp} & {a4}({b4}) & {a1}({b1}) & {a2}({b2}) &" + r"\textbf{" + f"{a3}({b3})" + "} \\"
+    output_str = f"{watermark},{model_name},{temp}, {task} & {a4}({b4}) & {a1}({b1}) & {a2}({b2}) &" + r"\textbf{" + f"{a3}({b3})" + "} \\"
     print(output_str)
     print()
     return
 
-# Run evaluation for all combinations
-for temp in ["1"]:
+if __name__ == "__main__":
     for task in ["sub", "del", "ins"]:
-        for watermark in ["Gumbel", "Inverse"]:
-            for model_name in ["1p3B", "opt-13b", "Llama-3.1-8B"]:
-                print("===================>")
-                print(task, watermark, model_name, temp)
-                plot4(task, watermark, model_name, temp)
+        plot4(task, "Gumbel", "1p3B", "1")

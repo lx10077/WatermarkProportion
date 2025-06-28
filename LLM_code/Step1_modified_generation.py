@@ -41,8 +41,8 @@ print(args)
 # -------------------------------
 # Main experiment loop
 # -------------------------------
-for method in ["Gumbel", "Inverse"]:
-    for temp in [0.7, 1]:
+for method in ["Gumbel"]:
+    for temp in [1]:
         print(method, temp)
 
         # Set random seed for reproducibility
@@ -121,7 +121,7 @@ for method in ["Gumbel", "Inverse"]:
             print("No such model name!!!", args.model)
             model_name = "???"
 
-        exp_name = f"corrupted/{model_name}-{method}-c{args.c}-m{args.m}-T{args.T}-{args.seed_way}-{args.seed}-temp{temp}-raw.pkl"
+        exp_name = f"text_data/{model_name}-{method}-c{args.c}-m{args.m}-T{args.T}-{args.seed_way}-{args.seed}-temp{temp}-raw.pkl"
         os.makedirs(os.path.dirname(exp_name), exist_ok=True)
 
         if os.path.exists(exp_name):
@@ -205,7 +205,7 @@ for method in ["Gumbel", "Inverse"]:
 
         # Apply substitution corruption
         for budget in modify_budgets:
-            exp_name = f"corrupted_sub/{model_name}-{method}-c{args.c}-m{args.m}-T{args.T}-{args.seed_way}-{args.seed}-temp{temp}-sub{budget}.pkl"
+            exp_name = f"text_data/{model_name}-{method}-c{args.c}-m{args.m}-T{args.T}-{args.seed_way}-{args.seed}-temp{temp}-sub{budget}.pkl"
             os.makedirs(os.path.dirname(exp_name), exist_ok=True)
             if not os.path.exists(exp_name):
                 results = defaultdict(dict)
@@ -218,7 +218,7 @@ for method in ["Gumbel", "Inverse"]:
 
         # Apply deletion corruption
         for budget in modify_budgets:
-            exp_name = f"corrupted_del/{model_name}-{method}-c{args.c}-m{args.m}-T{args.T}-{args.seed_way}-{args.seed}-temp{temp}-del{budget}.pkl"
+            exp_name = f"text_data/{model_name}-{method}-c{args.c}-m{args.m}-T{args.T}-{args.seed_way}-{args.seed}-temp{temp}-del{budget}.pkl"
             os.makedirs(os.path.dirname(exp_name), exist_ok=True)
             if not os.path.exists(exp_name):
                 results = defaultdict(dict)
@@ -231,7 +231,7 @@ for method in ["Gumbel", "Inverse"]:
 
         # Apply insertion corruption
         for budget in modify_budgets:
-            exp_name = f"corrupted_ins/{model_name}-{method}-c{args.c}-m{args.m}-T{args.T}-{args.seed_way}-{args.seed}-temp{temp}-ins{budget}.pkl"
+            exp_name = f"text_data/{model_name}-{method}-c{args.c}-m{args.m}-T{args.T}-{args.seed_way}-{args.seed}-temp{temp}-ins{budget}.pkl"
             os.makedirs(os.path.dirname(exp_name), exist_ok=True)
             if not os.path.exists(exp_name):
                 results = defaultdict(dict)
