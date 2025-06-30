@@ -3,7 +3,7 @@
 This repository accompanies the paper:
 
 > **Optimal Estimation of Watermark Proportions in Hybrid AI–Human Texts**  
-> *(link coming soon)*
+> *(https://arxiv.org/abs/2506.22343)*
 
 If you find this code useful, please cite:
 
@@ -11,7 +11,7 @@ If you find this code useful, please cite:
 @article{li2025optimal,
   title   = {Optimal Estimation of Watermark Proportions in Hybrid {AI}–Human Texts},
   author  = {Li, Xiang and Wen, Garret and He, Weiqing and Wu, Jiayuan and Long, Qi and Su, Weijie J},
-  journal = {arXiv preprint arXiv:????.?????},
+  journal = {arXiv preprint arXiv:2506.22343},
   year    = {2025}
 }
 ````
